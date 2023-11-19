@@ -1,8 +1,6 @@
 package com.bilgeadam.controller;
 
-import com.bilgeadam.dto.request.ActivationRequestDto;
-import com.bilgeadam.dto.request.LoginRequestDto;
-import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.LoginResponseDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.repository.entity.Auth;
@@ -31,6 +29,11 @@ public class AuthController {
             Bu token'ın nereden geleceğini iyi düşünün. (Token'ın otomatik şekilde parametre olarak geçilmesine gerek yok, bir token elde edin,
             bu token'ı dto'ya parametre olarak swagger'da işleyin.)
             Update edilecek UserProfile'ı token ile yakalayalım ve update işlemlerini gerçekleştirelim.
+
+            Hem orjinal, hem de yeni yazacağımız proje'de auth kısmına delete metodu ekleyelim.
+            (delete metodu entity'i silmeyecek, status'u deleted'e çevirecek).
+            Auth'da gerçekleştireceğimiz bu işlem userProfile'ı da güncellesin.
+
      */
 
     private final AuthService authService;
@@ -74,4 +77,11 @@ public class AuthController {
     public ResponseEntity<String> getRoleFromToken(String token){
         return ResponseEntity.ok(tokenManager.getRoleFromToken(token).get());
     }
+
+    @PostMapping("/deleted-status")
+    public ResponseEntity<Boolean> deleteStatus(DeleteRequestDto dto){
+        return ResponseEntity.ok(authService.deleteStatus(dto));
+    }
+
+
 }

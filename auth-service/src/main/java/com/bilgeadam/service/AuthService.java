@@ -1,9 +1,6 @@
 package com.bilgeadam.service;
 
-import com.bilgeadam.dto.request.ActivateStatusRequestDto;
-import com.bilgeadam.dto.request.ActivationRequestDto;
-import com.bilgeadam.dto.request.LoginRequestDto;
-import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.LoginResponseDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.exception.AuthManagerException;
@@ -49,7 +46,13 @@ public class AuthService extends ServiceManager<Auth,Long> {
         }
 
         if (!(authOptional.get().getStatus().equals(EStatus.ACTIVE))){
-            throw  new AuthManagerException(ErrorType.USER_INACTIVE);
+            if (authOptional.get().getStatus().equals(EStatus.DELETED)){
+                throw new AuthManagerException(ErrorType.DELETED_USER);
+            } else if (authOptional.get().getStatus().equals(EStatus.BANNED)) {
+                throw new AuthManagerException(ErrorType.BANNED_USER);
+            } else{
+                throw new AuthManagerException(ErrorType.USER_INACTIVE);
+            }
         }
         Optional<String> token = tokenManager.createToken(authOptional.get().getId(),authOptional.get().getRole());
 //        if (token.isEmpty())
@@ -75,5 +78,19 @@ public class AuthService extends ServiceManager<Auth,Long> {
             throw new AuthManagerException(ErrorType.ACTIVATION_CODE_ERROR);
         }
 
+    }
+
+    public Boolean deleteStatus(DeleteRequestDto dto) {
+        Optional<Auth> auth = findById(dto.getId());
+        if(auth.isEmpty()) {
+            throw new AuthManagerException(ErrorType.USER_NOT_FOUND);
+        }
+        auth.get().setStatus(EStatus.DELETED);
+        update(auth.get());
+
+        userManager.deleteStatusUser(DeleteStatusRequestDto.builder()
+                        .authId(dto.getId())
+                .build());
+        return true;
     }
 }

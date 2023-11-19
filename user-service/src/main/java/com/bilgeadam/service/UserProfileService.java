@@ -1,6 +1,7 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.ActivateStatusRequestDto;
+import com.bilgeadam.dto.request.DeleteStatusRequestDto;
 import com.bilgeadam.dto.request.UpdateUserProfileRequestDto;
 import com.bilgeadam.dto.request.UserCreateRequestDto;
 import com.bilgeadam.exception.ErrorType;
@@ -74,5 +75,17 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         userProfile.get().setAvatarUrl(dto.getAvatarUrl());
         update(userProfile.get());
         return true;
+    }
+
+
+    public Boolean deleteStatusUser(DeleteStatusRequestDto dto) {
+        Optional<UserProfile> userProfile = userProfileRepository.findOptionalByAuthId(dto.getAuthId());
+        if (userProfile.isEmpty()){
+            throw new UserManagerException(ErrorType.USER_NOT_FOUND);
+        }else {
+            userProfile.get().setStatus(EStatus.DELETED);
+            update(userProfile.get());
+            return true;
+        }
     }
 }

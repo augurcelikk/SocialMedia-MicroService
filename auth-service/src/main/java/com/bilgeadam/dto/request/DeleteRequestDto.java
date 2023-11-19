@@ -1,7 +1,5 @@
 package com.bilgeadam.dto.request;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetProfileByTokenRequestDto {
+public class DeleteRequestDto {
 
-    @NotNull
-    @Size(min=50)
-    private String token;
-
+    Long id;
 }

@@ -1,6 +1,7 @@
 package com.bilgeadam.manager;
 
 import com.bilgeadam.dto.request.ActivateStatusRequestDto;
+import com.bilgeadam.dto.request.DeleteStatusRequestDto;
 import com.bilgeadam.dto.request.UserCreateRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,8 @@ public interface UserManager {
 
     @PostMapping(ACTIVATESTATUS+"2")
     public ResponseEntity<Boolean> activateStatus2(@RequestBody ActivateStatusRequestDto dto);
+
+    @PostMapping("/delete-status")
+    public ResponseEntity<Boolean> deleteStatusUser(@RequestBody DeleteStatusRequestDto dto);
 
 }

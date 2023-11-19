@@ -15,7 +15,10 @@ public enum ErrorType {
     INVALID_TOKEN(4113,"Gecersiz token..." , HttpStatus.BAD_REQUEST ),
     USER_INACTIVE(4114,"Kullanici inaktif..." , HttpStatus.BAD_REQUEST ),
     ACTIVATION_CODE_ERROR(4115,"Aktivasyon kodu hatalidir..." , HttpStatus.FORBIDDEN ),
-    TOKEN_NOT_CREATED(4116,"Token üretilirken bir hata oluştu" ,HttpStatus.INTERNAL_SERVER_ERROR );
+    TOKEN_NOT_CREATED(4116,"Token üretilirken bir hata oluştu" ,HttpStatus.INTERNAL_SERVER_ERROR ),
+    DELETED_USER(4117,"Kullanici sistemeden silinmistir..." ,HttpStatus.BAD_REQUEST ),
+    BANNED_USER(4118,"Kullanici sistemimiz tarafindan banlanmistir." ,HttpStatus.FORBIDDEN );
+
     private int code;
     private String message;
     private HttpStatus httpStatus;

@@ -1,6 +1,7 @@
 package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.ActivateStatusRequestDto;
+import com.bilgeadam.dto.request.DeleteStatusRequestDto;
 import com.bilgeadam.dto.request.UpdateUserProfileRequestDto;
 import com.bilgeadam.dto.request.UserCreateRequestDto;
 import com.bilgeadam.repository.entity.UserProfile;
@@ -31,9 +32,14 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.activateStatus2(dto));
     }
 
-    @PostMapping("/update-profile")
+    @PostMapping(UPDATE)
     public ResponseEntity<Boolean> updateProfile(@RequestBody UpdateUserProfileRequestDto dto){
         return ResponseEntity.ok(userProfileService.updateProfile(dto));
+    }
+
+    @PostMapping("/delete-status")
+    public ResponseEntity<Boolean> deleteStatusUser(@RequestBody DeleteStatusRequestDto dto){
+        return ResponseEntity.ok(userProfileService.deleteStatusUser(dto));
     }
 
 }
