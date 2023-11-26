@@ -10,11 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.bilgeadam.constants.RestApi.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(USER)
 public class UserProfileController {
+
+//    findByUsername metodu yazalim. bu metodu service'de cacheleyelim
 
     private final UserProfileService userProfileService;
     @PostMapping(CREATE)
@@ -40,6 +44,21 @@ public class UserProfileController {
     @PostMapping("/delete-status")
     public ResponseEntity<Boolean> deleteStatusUser(@RequestBody DeleteStatusRequestDto dto){
         return ResponseEntity.ok(userProfileService.deleteStatusUser(dto));
+    }
+
+    @GetMapping(FINDALL)
+    public ResponseEntity<List<UserProfile>> findAll(){
+        return ResponseEntity.ok(userProfileService.findAll());
+    }
+
+    @GetMapping("/find_by_username")
+    public ResponseEntity<UserProfile> findByUsername(@RequestParam String username){
+        return ResponseEntity.ok(userProfileService.findByUsername(username));
+    }
+
+    @GetMapping(FINDBYROLE)
+    public ResponseEntity<List<UserProfile>> findByRole(@RequestParam String role){
+        return ResponseEntity.ok(userProfileService.findByRole(role));
     }
 
 }

@@ -1,0 +1,33 @@
+server:
+  port: 7070
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:5432/java11AuthDB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java11
+    password: 123
+
+jwt:
+  secretkey: ${java11secretkey}
+  issuer: ${java11issuer}
+  audience: ${java11audience}
+
+rabbitmq:
+  exchange-auth: auth-exchange
+  register-key: register-key
+  queue-register: register-queue
+  register-mail-key: register-mail-key
+  register-mail-queue: register-mail-queue

@@ -17,7 +17,8 @@ public enum ErrorType {
     ACTIVATION_CODE_ERROR(4115,"Aktivasyon kodu hatalidir..." , HttpStatus.FORBIDDEN ),
     TOKEN_NOT_CREATED(4116,"Token üretilirken bir hata oluştu" ,HttpStatus.INTERNAL_SERVER_ERROR ),
     DELETED_USER(4117,"Kullanici sistemeden silinmistir..." ,HttpStatus.BAD_REQUEST ),
-    BANNED_USER(4118,"Kullanici sistemimiz tarafindan banlanmistir." ,HttpStatus.FORBIDDEN );
+    BANNED_USER(4118,"Kullanici sistemimiz tarafindan banlanmistir." ,HttpStatus.FORBIDDEN ),
+    ROLE_NOT_FOUND(4118,"Boyle bir kullanici rolu bulunmamaktadir." ,HttpStatus.BAD_REQUEST );
 
     private int code;
     private String message;

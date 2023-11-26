@@ -9,6 +9,9 @@ import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.enums.ERole;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static com.bilgeadam.constants.RestApi.*;
@@ -34,15 +37,23 @@ public class AuthController {
             (delete metodu entity'i silmeyecek, status'u deleted'e çevirecek).
             Auth'da gerçekleştireceğimiz bu işlem userProfile'ı da güncellesin.
 
+
+
      */
 
     private final AuthService authService;
     private final JwtTokenManager tokenManager;
+    private final CacheManager cacheManager;
 
 
     @PostMapping(REGISTER)
     public ResponseEntity<RegisterResponseDto>  register (@RequestBody @Valid RegisterRequestDto dto){
         return ResponseEntity.ok(authService.register(dto));
+    }
+
+    @PostMapping(REGISTER+"2")
+    public ResponseEntity<RegisterResponseDto>  registerWithRabbitMq (@RequestBody @Valid RegisterRequestDto dto){
+        return ResponseEntity.ok(authService.registerWithRabbitMq(dto));
     }
 
     @PostMapping(LOGIN)
@@ -82,6 +93,43 @@ public class AuthController {
     public ResponseEntity<Boolean> deleteStatus(DeleteRequestDto dto){
         return ResponseEntity.ok(authService.deleteStatus(dto));
     }
+
+    @GetMapping("/redis")
+    @Cacheable(value = "redisexample")
+    public String redisExample(@RequestParam String value){
+        try {
+            Thread.sleep(2000);
+            return value;
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+    }
+
+    @GetMapping("/redisdelete")
+    @CacheEvict(cacheNames = "redisexample", allEntries = true)
+    public void redisDelete(){
+
+    }
+
+    @GetMapping("/redisdelete2")
+    @CacheEvict(cacheNames = "redisexample", allEntries = true)
+    public Boolean redisDelete2(){
+        try {
+//            cacheManager.getCache("redisexample").clear(); //redisexample etiketli bütün cache'leri temizler.
+            cacheManager.getCache("redisexample").evict("ugur");
+            return true;
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @GetMapping(FINDBYROLE)
+    public ResponseEntity<List<Long>> findByRole(@RequestParam String role){
+        return ResponseEntity.ok(authService.findByRole(role));
+    }
+
 
 
 }

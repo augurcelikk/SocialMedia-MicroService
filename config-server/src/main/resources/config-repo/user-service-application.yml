@@ -1,0 +1,28 @@
+server:
+  port: 7071
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27020
+      username: java11user #admin olani degil de sonradan yetkilendirdigim java11useri verdim. admin her seyde yetkili. simdi burasi yalnizca userdbye erisebiliyor bu kullanici sayesinde.
+      password: root
+      database: userdb
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java11
+    password: 123
+
+
+jwt:
+  secretkey: ${java11secretkey}
+  issuer: ${java11issuer}
+  audience: ${java11audience}
+
+rabbitmq:
+  exchange-auth: auth-exchange
+  register-key: register-key
+  queue-register: register-queue
