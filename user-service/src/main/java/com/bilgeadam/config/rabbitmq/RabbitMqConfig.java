@@ -12,9 +12,30 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
 
 
+    @Value("${rabbitmq.exchange-user}")
+    private String exchange;
+
+    @Value("${rabbitmq.elastic-register-key}")
+    private String elasticRegisterBindingKey;
+
+    @Value("${rabbitmq.queue-register-elastic}")
+    private String elasticRegisterQueue;
+
+
     //alttaki ikisi sayesinde artık queyu dinlerken patlayamayacak userdaki rabbitmq
     @Value("${rabbitmq.queue-register}")
     private String queueNameRegister; //kuyruk icin belirtecegim isim
+
+
+    @Bean
+    public DirectExchange exchangeUser(){
+        return new DirectExchange(exchange);
+    }
+
+    @Bean
+    public Binding bindingRegisterElastic(final Queue elasticRegisterQueue, final DirectExchange exchangeUser){
+        return BindingBuilder.bind(elasticRegisterQueue).to(exchangeUser).with(elasticRegisterBindingKey);
+    }
 
 
     // bos bir queue olusturuyor diyebiliriz. sıra olusturuyor ama içi boş aslinda istek yoksa.
@@ -22,6 +43,13 @@ public class RabbitMqConfig {
     public Queue registerQueue(){
         return new Queue(queueNameRegister);
     }
+
+    @Bean
+    public Queue elasticRegisterQueue(){
+        return new Queue(elasticRegisterQueue);
+    }
+
+
 
 
 }

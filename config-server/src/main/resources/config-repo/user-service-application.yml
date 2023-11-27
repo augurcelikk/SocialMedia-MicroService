@@ -23,6 +23,7 @@ jwt:
   audience: ${java11audience}
 
 rabbitmq:
-  exchange-auth: auth-exchange
-  register-key: register-key
-  queue-register: register-queue
+  exchange-user: user-exchange
+  elastic-register-key: elastic-register-key
+  queue-register: register-queue #rabbit listener'a dinleyeceği bir sey veriyoruz ki bir kuyruk olusturuyor bastan hemen.
+  queue-register-elastic: elastic-register-queue

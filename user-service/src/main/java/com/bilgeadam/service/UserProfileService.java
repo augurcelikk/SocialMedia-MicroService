@@ -8,7 +8,9 @@ import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
 import com.bilgeadam.manager.AuthManager;
 import com.bilgeadam.mapper.UserMapper;
+import com.bilgeadam.rabbitmq.model.RegisterElasticModel;
 import com.bilgeadam.rabbitmq.model.RegisterModel;
+import com.bilgeadam.rabbitmq.producer.RegisterElasticProducer;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.repository.entity.UserProfile;
 import com.bilgeadam.utility.JwtTokenManager;
@@ -32,12 +34,15 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
 
     private final AuthManager authManager;
 
-    public UserProfileService(UserProfileRepository userProfileRepository, JwtTokenManager jwtTokenManager, CacheManager cacheManager, AuthManager authManager) {
+    private final RegisterElasticProducer registerElasticProducer;
+
+    public UserProfileService(UserProfileRepository userProfileRepository, JwtTokenManager jwtTokenManager, CacheManager cacheManager, AuthManager authManager, RegisterElasticProducer registerElasticProducer) {
         super(userProfileRepository);
         this.userProfileRepository = userProfileRepository;
         this.jwtTokenManager = jwtTokenManager;
         this.cacheManager = cacheManager;
         this.authManager = authManager;
+        this.registerElasticProducer = registerElasticProducer;
     }
 
     public Boolean createUser(UserCreateRequestDto dto) {
@@ -141,9 +146,10 @@ public class UserProfileService extends ServiceManager<UserProfile,String> {
 
     public Boolean createUserWithRabbitMq(RegisterModel model) {
         try {
-            save(UserMapper.INSTANCE.fromRegisterModelToUserProfile(model));
+            UserProfile userProfile=save(UserMapper.INSTANCE.fromRegisterModelToUserProfile(model));
 
             //rabbitmq ile elastic'e gonder.
+            registerElasticProducer.sendNewUser(UserMapper.INSTANCE.fromUserProfileModeltoElasticModel(userProfile));
             return true;
         } catch (Exception e){
             throw new UserManagerException(ErrorType.USER_NOT_CREATED);

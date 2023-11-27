@@ -3,3 +3,6 @@ server:
 spring:
   elasticsearch:
     uris: http://localhost:9200
+
+rabbitmq:
+  queue-register-elastic: elastic-register-queue #dinlemeye hazirim boyle bir queueyi diyor burada.
