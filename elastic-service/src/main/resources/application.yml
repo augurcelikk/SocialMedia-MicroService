@@ -3,6 +3,11 @@ server:
 spring:
   elasticsearch:
     uris: http://localhost:9200
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java11
+    password: 123
 
 rabbitmq:
   queue-register-elastic: elastic-register-queue #dinlemeye hazirim boyle bir queueyi diyor burada.

@@ -25,7 +25,7 @@ public class JwtTokenManager {
     @Value("${jwt.audience}")
     String audience; //bilgeadam - bu proje demek yani. konserdeki dinleyiciler
 
-    Long expiration = System.currentTimeMillis() + (1000*60*5);
+    Long expiration = System.currentTimeMillis() + (1000 * 60 * 5);
 
     public Optional<String> createToken(Long id) {
         String token = null;

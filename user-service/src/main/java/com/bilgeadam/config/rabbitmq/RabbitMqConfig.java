@@ -33,8 +33,8 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding bindingRegisterElastic(final Queue elasticRegisterQueue, final DirectExchange exchangeUser){
-        return BindingBuilder.bind(elasticRegisterQueue).to(exchangeUser).with(elasticRegisterBindingKey);
+    public Binding bindingRegisterElastic(final Queue registerQueueElastic, final DirectExchange exchangeUser){
+        return BindingBuilder.bind(registerQueueElastic).to(exchangeUser).with(elasticRegisterBindingKey);
     }
 
 
@@ -45,7 +45,7 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Queue elasticRegisterQueue(){
+    public Queue registerQueueElastic(){
         return new Queue(elasticRegisterQueue);
     }
 

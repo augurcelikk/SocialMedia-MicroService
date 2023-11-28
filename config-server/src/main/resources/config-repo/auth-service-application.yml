@@ -1,7 +1,14 @@
 server:
   port: 7070
 
+
+
 spring:
+  security:
+    user:
+      name: ugur
+      password: 123
+
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
@@ -9,7 +16,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/java11AuthDB
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -19,6 +26,7 @@ spring:
     port: 5672
     username: java11
     password: 123
+
 
 jwt:
   secretkey: ${java11secretkey}
